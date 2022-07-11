@@ -1,0 +1,19 @@
+{
+  "name": "codfrm/dz_recommend",
+  "description": "油猴中文网用文章相似推荐插件",
+  "license": "GPL-3",
+  "autoload": {
+    "psr-4": {
+      "Codfrm\\DzRecommend\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "王一之",
+      "email": "yz@ggnb.top"
+    }
+  ],
+  "require": {
+    "ext-json": "*"
+  }
+}

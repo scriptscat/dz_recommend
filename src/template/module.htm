@@ -1,0 +1,22 @@
+{eval
+function tpl_viewthread_postbottom_recommend($list) {
+global $_G;
+}
+<!--{block return}-->
+<div>
+    <div style="border-top: 1px solid #efefef;padding: 4px 0;margin-top: 16px;">
+        <span style="font-size: 18px">相关推荐</span>
+    </div>
+    <div style="border-top: 1px solid #efefef;padding: 4px 0;display: flex;justify-content: start;flex-wrap: wrap;">
+        <!--{loop $list $key $thread}-->
+        <div style="width: 33%;line-height: 30px;font-size: 14px">
+            <span style="margin-right: 4px">•</span><a href="/thread-$thread['tid']-1-1.html">$thread['subject']</a>
+        </div>
+        <!--{/loop}-->
+    </div>
+</div>
+<!--{/block}-->
+<!--{eval return $return;}-->
+{eval
+}
+}
