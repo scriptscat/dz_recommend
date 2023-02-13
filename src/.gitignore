@@ -1,3 +1,5 @@
 dist
 vendor
 node_modules
+
+config.php

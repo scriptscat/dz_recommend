@@ -1,18 +1,19 @@
-FROM php:7.4-fpm-alpine3.12
+FROM php:7.4-fpm-alpine3.16
 
 WORKDIR /root
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories
 
 COPY docker-entrypoint.sh .
 
 RUN apk update && \
     apk add nginx && \
-    mkdir -p /run/nginx && \
-    chmod 755 docker-entrypoint.sh && \
+    mkdir -p /run/nginx
+
+run chmod 755 docker-entrypoint.sh && \
     docker-php-ext-install mysqli
 
-ENV DZ_URL https://www.discuz.net/files/DiscuzX/3.4/Discuz_X3.4_SC_UTF8_20220518.zip
+ENV DZ_URL https://gitee.com/Discuz/DiscuzX/attach_files/1309965/download
 ENV DZ_WWW_ROOT /var/www/html
 
 ADD ${DZ_URL} /tmp/discuz.zip
@@ -21,6 +22,8 @@ RUN unzip /tmp/discuz.zip \
     && cd ${DZ_WWW_ROOT} \
     && chmod a+w -R config data uc_server/data uc_client/data \
     && rm -rf /var/Lib/apt/lists/*
+
+COPY class_core.php ${DZ_WWW_ROOT}/source/class/
 
 EXPOSE 80/tcp
 
