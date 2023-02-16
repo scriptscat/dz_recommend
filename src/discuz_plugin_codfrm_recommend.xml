@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
-	<item id="Version"><![CDATA[X3.4]]></item>
-	<item id="Time"><![CDATA[2022-07-10 19:57]]></item>
+	<item id="Version"><![CDATA[X3.5]]></item>
+	<item id="Time"><![CDATA[2023-02-16 17:29]]></item>
 	<item id="From"><![CDATA[Discuz! Board (http://127.0.0.1/)]]></item>
 	<item id="Data">
 		<item id="plugin">
-			<item id="available"><![CDATA[0]]></item>
+			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[1]]></item>
 			<item id="name"><![CDATA[论坛推荐 - 王一之]]></item>
 			<item id="identifier"><![CDATA[codfrm_recommend]]></item>
-			<item id="description"><![CDATA[油猴中文网用推荐插件]]></item>
+			<item id="description"><![CDATA[油猴中文网用搜索、推荐插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[codfrm_recommend/]]></item>
 			<item id="copyright"><![CDATA[blog.icodef.com]]></item>
@@ -29,9 +29,69 @@
 					<item id="navsubname"><![CDATA[]]></item>
 					<item id="navsuburl"><![CDATA[]]></item>
 				</item>
+				<item id="1">
+					<item id="name"><![CDATA[manager]]></item>
+					<item id="param"><![CDATA[test]]></item>
+					<item id="menu"><![CDATA[管理数据]]></item>
+					<item id="url"><![CDATA[]]></item>
+					<item id="type"><![CDATA[3]]></item>
+					<item id="adminid"><![CDATA[0]]></item>
+					<item id="displayorder"><![CDATA[0]]></item>
+					<item id="navtitle"><![CDATA[]]></item>
+					<item id="navicon"><![CDATA[]]></item>
+					<item id="navsubname"><![CDATA[]]></item>
+					<item id="navsuburl"><![CDATA[]]></item>
+				</item>
 			</item>
 		</item>
-		<item id="version"><![CDATA[X3.4]]></item>
+		<item id="version"><![CDATA[X3.5]]></item>
+		<item id="var">
+			<item id="0">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[es host]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[es_host]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[http://192.168.1.136:9200]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="1">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[es 用户名]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[es_username]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="2">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[es 密码]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[es_password]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="3">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[es pem密钥]]></item>
+				<item id="description"><![CDATA[pem密钥路径]]></item>
+				<item id="variable"><![CDATA[es_pem]]></item>
+				<item id="type"><![CDATA[text]]></item>
+				<item id="value"><![CDATA[]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="4">
+				<item id="displayorder"><![CDATA[0]]></item>
+				<item id="title"><![CDATA[es 开启ssl]]></item>
+				<item id="description"><![CDATA[]]></item>
+				<item id="variable"><![CDATA[es_ssl]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[0]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+		</item>
 		<item id="installfile"><![CDATA[install.php]]></item>
 		<item id="upgradefile"><![CDATA[upgrade.php]]></item>
 	</item>

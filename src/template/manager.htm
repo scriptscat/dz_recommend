@@ -1,0 +1,39 @@
+{eval
+function tpl_manager() {
+global $_G;
+}
+<!--{block return}-->
+<div style="width: 50%">
+    <textarea id="data" style="width: 100%; height: 300px;" readonly></textarea>
+    <button id="refresh" class="btn" style="float: right">重建数据</button>
+</div>
+<script>
+    const btn = document.querySelector("#refresh");
+    btn.onclick = function () {
+        btn.setAttribute("disable", "true")
+        fetch("plugin.php?id=codfrm_recommend:manager" + "&operation=refresh", {
+            method: "POST",
+        })
+            .then(response => response.body.getReader())
+            .then(reader => {
+                const decoder = new TextDecoder();
+                return reader.read().then(function processText({done, value}) {
+                    if (done) {
+                        btn.removeAttribute("disable")
+                        return;
+                    }
+                    document.querySelector("#data").value += decoder.decode(value);
+                    return reader.read().then(processText);
+                });
+            })
+            .catch(e => {
+                alert(e)
+                btn.removeAttribute("disable")
+            });
+    };
+</script>
+<!--{/block}-->
+<!--{eval return $return;}-->
+{eval
+}
+}

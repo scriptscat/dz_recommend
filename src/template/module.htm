@@ -10,7 +10,7 @@ global $_G;
     <div style="border-top: 1px solid #efefef;padding: 4px 0;display: flex;justify-content: start;flex-wrap: wrap;">
         <!--{loop $list $key $thread}-->
         <div style="width: 33%;line-height: 30px;font-size: 14px">
-            <span style="margin-right: 4px">•</span><a href="/thread-$thread['tid']-1-1.html">$thread['subject']</a>
+            <span style="margin-right: 4px">•</span><a href="/thread-$thread['_source']['tid']-1-1.html">$thread['_source']['title']</a>
         </div>
         <!--{/loop}-->
     </div>

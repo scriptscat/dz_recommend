@@ -6,7 +6,6 @@ class Es
 {
     static $client = null;
 
-
     static function getClient()
     {
         if (self::$client == null) {
