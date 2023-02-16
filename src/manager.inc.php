@@ -20,6 +20,7 @@ switch ($_GET["operation"]) {
 function refresh()
 {
     set_time_limit(0);
+    ignore_user_abort(true);
     // SSE fetch
     header('Content-Type: text/event-stream');
     header('Cache-Control: no-cache');
@@ -29,7 +30,7 @@ function refresh()
         $resp = Es::getClient()->indices()->delete(["index" => "dz.forum_thread"]);
         var_dump($resp);
     } catch (Exception $e) {
-        var_dump($e);
+        var_dump($e->getMessage());
     }
     $startPos = 0;
     while (true) {

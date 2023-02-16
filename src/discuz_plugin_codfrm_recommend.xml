@@ -2,7 +2,7 @@
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
 	<item id="Version"><![CDATA[X3.5]]></item>
-	<item id="Time"><![CDATA[2023-02-16 17:29]]></item>
+	<item id="Time"><![CDATA[2023-02-16 22:02]]></item>
 	<item id="From"><![CDATA[Discuz! Board (http://127.0.0.1/)]]></item>
 	<item id="Data">
 		<item id="plugin">
@@ -14,7 +14,7 @@
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[codfrm_recommend/]]></item>
 			<item id="copyright"><![CDATA[blog.icodef.com]]></item>
-			<item id="version"><![CDATA[1.0.0]]></item>
+			<item id="version"><![CDATA[2.0.0]]></item>
 			<item id="__modules">
 				<item id="0">
 					<item id="name"><![CDATA[recommend]]></item>

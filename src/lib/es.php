@@ -17,7 +17,7 @@ class Es
                 $builder = $builder->setBasicAuthentication($setting["es_username"], $setting["es_password"]);
             }
             if ($setting["es_ssl"]) {
-                $builder = $builder->setSSLVerification($setting["es_ssl"])
+                $builder = $builder->setSSLVerification(false)
                     ->setSSLCert($setting["es_pem"]);
             }
             self::$client = $builder->build();
