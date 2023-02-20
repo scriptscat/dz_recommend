@@ -24,4 +24,41 @@ class Es
         }
         return self::$client;
     }
+
+    static function insertThread($tid, $fid, $title, $content, $authorid, $createtime)
+    {
+        global $_G;
+        $data = [
+            "tid" => $tid,
+            "fid" => $fid,
+            "title" => $title,
+            "content" => $content,
+            "authorid" => $authorid,
+            "createtime" => $createtime,
+        ];
+        $resp = self::getClient()->index([
+            "index" => "dz.forum_thread",
+            "id" => $tid,
+            "body" => $data,
+        ]);
+        return $resp;
+    }
+
+    static function updateThread($tid, $fid, $title, $content)
+    {
+        global $_G;
+        $data = [
+            "fid" => $fid,
+            "title" => $title,
+            "content" => $content,
+        ];
+        $resp = self::getClient()->update([
+            "index" => "dz.forum_thread",
+            "id" => $tid,
+            "body" => [
+                "doc" => $data
+            ]
+        ]);
+        return $resp;
+    }
 }

@@ -10,7 +10,7 @@ RUN apk update && \
     apk add nginx && \
     mkdir -p /run/nginx
 
-run chmod 755 docker-entrypoint.sh && \
+RUN chmod 755 docker-entrypoint.sh && \
     docker-php-ext-install mysqli
 
 ENV DZ_URL https://gitee.com/Discuz/DiscuzX/attach_files/1309965/download

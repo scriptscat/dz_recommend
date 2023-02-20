@@ -49,6 +49,10 @@ class plugin_codfrm_recommend_forum extends plugin_codfrm_recommend
                 global $_G;
                 return $item['_id'] != $_G['tid'];
             });
+            // 只取6个
+            if (count($list) > 6) {
+                $list = array_slice($list, 0, 6);
+            }
         } catch (Exception $e) {
             // 屏蔽错误
         }
@@ -67,35 +71,28 @@ class plugin_codfrm_recommend_forum extends plugin_codfrm_recommend
      */
     public function post_message($param)
     {
+        global $_G;
         try {
             switch ($param['param'][0]) {
                 case "post_newthread_succeed":
                     // 添加新记录
-                    Es::getClient()->index([
-                        "index" => "dz.forum_thread",
-                        "id" => $param['param'][2]['tid'],
-                        "body" => [
-                            "tid" => $param['param'][2]['tid'],
-                            "fid" => $param['param'][2]['fid'],
-                            "title" => $_POST['subject'],
-                            "content" => $_POST['message']
-                        ]
-                    ]);
+                    Es::insertThread(
+                        $param['param'][2]['tid'],
+                        $param['param'][2]['fid'],
+                        $_POST['subject'],
+                        $_POST['message'],
+                        $_G['uid'],
+                        time(),
+                    );
                     break;
                 case "post_edit_succeed":
                     // 更新记录
-                    Es::getClient()->update([
-                        "index" => "dz.forum_thread",
-                        "id" => $param['param'][2]['tid'],
-                        "body" => [
-                            "doc" => [
-                                "tid" => $param['param'][2]['tid'],
-                                "fid" => $param['param'][2]['fid'],
-                                "title" => $_POST['subject'],
-                                "content" => $_POST['message']
-                            ]
-                        ]
-                    ]);
+                    Es::updateThread(
+                        $param['param'][2]['tid'],
+                        $param['param'][2]['fid'],
+                        $_POST['subject'],
+                        $_POST['message'],
+                    );
                     break;
             }
         } catch (Exception $e) {

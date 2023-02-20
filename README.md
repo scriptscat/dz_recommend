@@ -7,3 +7,50 @@
 ```php
 $_config['plugindeveloper'] = 2;
 ```
+
+## es 索引模板
+
+```
+PUT _index_template/dz.forum_thread
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "tid": {
+          "type": "long"
+        },
+        "fid": {
+          "type": "long"
+        },
+        "title": {
+          "type": "text",
+          "index": true,
+          "analyzer": "ik_max_word",
+          "eager_global_ordinals": false,
+          "index_phrases": false,
+          "norms": true,
+          "fielddata": false,
+          "store": false,
+          "index_options": "positions",
+          "search_analyzer": "ik_smart"
+        },
+        "content": {
+          "type": "text",
+          "index": true,
+          "analyzer": "ik_max_word",
+          "eager_global_ordinals": false,
+          "index_phrases": false,
+          "norms": true,
+          "fielddata": false,
+          "store": false,
+          "index_options": "positions",
+          "search_analyzer": "ik_smart"
+        }
+      }
+    }
+  },
+  "index_patterns": [
+    "dz.forum_thread"
+  ]
+}
+```

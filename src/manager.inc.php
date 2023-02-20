@@ -44,16 +44,10 @@ function refresh()
             // 查询帖子内容
             $post = C::t("forum_post")->fetch_all_by_tid("tid:" . $data['tid'], $data['tid'], true, '', 0, 1);
             $post = array_pop($post);
-            Es::getClient()->index([
-                "index" => "dz.forum_thread",
-                "id" => $data['tid'],
-                "body" => [
-                    "tid" => $data['tid'],
-                    "fid" => $data['fid'],
-                    "title" => $data['subject'],
-                    "content" => $post['message'],
-                ]
-            ]);
+            Es::insertThread(
+                $data['tid'], $data['fid'], $data['subject'], $post['message'],
+                $data['authorid'], $data['dateline']
+            );
             echo "data: {$data['tid']} {$data['subject']}";
             echo PHP_EOL;
             ob_flush();
