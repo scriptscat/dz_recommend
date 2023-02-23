@@ -12,6 +12,9 @@ switch ($_GET["operation"]) {
     case "search":
         search();
         break;
+    case "user":
+        user();
+        break;
     default:
 }
 
@@ -20,6 +23,7 @@ function search()
     global $_G;
     $keyword = $_GET["keyword"];
     $page = $_GET["page"] ?? 1;
+    $uid = $_GET["uid"] ?? 0;
     if (empty($keyword)) {
         showmessage("请输入关键词");
         return;
@@ -37,7 +41,7 @@ function search()
         return;
     }
     // 通过title和content,es搜索,并获取分词结果
-    $resp = Es::getClient()->search([
+    $query = [
         "index" => "dz.forum_thread",
         "body" => [
             "query" => [
@@ -49,7 +53,24 @@ function search()
         ],
         "size" => 20,
         "from" => ($page - 1) * 20,
-    ]);
+    ];
+    // 如果指定了用户id,则只搜索该用户的帖子
+    if ($uid > 0) {
+        $query["body"]["query"] = ["bool" => [
+            "must" => [
+                "multi_match" => [
+                    "query" => $keyword,
+                    "fields" => ["title", "content"],
+                ],
+            ],
+            "filter" => [
+                "term" => [
+                    "authorid" => $uid
+                ]
+            ]
+        ]];
+    }
+    $resp = Es::getClient()->search($query);
     // 获取分词结果
 
     $analyzeResp = Es::getClient()->indices()->analyze([
@@ -79,5 +100,38 @@ function search()
         "data" => $list,
         "total" => $resp['hits']['total']['value'],
         "analyze" => $analyzeResp['tokens'],
+    ], JSON_UNESCAPED_UNICODE);
+}
+
+// user 用户名前缀搜索用户
+function user()
+{
+    global $_G;
+    $username = $_GET["username"];
+    if (empty($username)) {
+        showmessage("请输入用户名");
+        return;
+    }
+
+    $list = C::t('common_member')->fetch_all_by_like_username($username, 0, 5);
+    if (empty($list)) {
+        try {
+            // 从归档表中查询
+            $list = C::t('common_member_archive')->fetch_all_by_like_username($username, 0, 5);
+        } catch (Exception $e) {
+            // ignore
+        }
+    }
+    $data = [];
+    foreach ($list as $k => &$item) {
+        $data[] = [
+            "uid" => $item["uid"],
+            "username" => $item["username"],
+        ];
+    }
+
+    echo json_encode([
+        "code" => 0,
+        "data" => $data,
     ], JSON_UNESCAPED_UNICODE);
 }
