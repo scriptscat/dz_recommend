@@ -1,0 +1,12 @@
+.searchBox {
+  margin-top: 15px;
+}
+
+.searchResult {
+  background: #f3f3f3;
+  width: 90%;
+  height: 40px;
+  line-height: 40px;
+  font-family: cursive;
+  margin-bottom: 10px;
+}
