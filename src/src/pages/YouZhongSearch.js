@@ -44,7 +44,7 @@ function YouZhongSearch() {
   // 搜索用户
   const onSearchUser = (userName) => {
     console.log(userName)
-    Search.searchUserName().then(
+    Search.searchUserName(userName).then(
       res => {
         console.log(res)
         if (res.data.length > 0) {

@@ -5,7 +5,7 @@ export default {
   searchContent : (keyword, uid = '') => {
     return request('get', `${YOUZHONG_URL}?id=codfrm_recommend:search&operation=search&keyword=${keyword}&uid=${uid}`)
   },
-  searchUserName : () => {
-    return request('get', `${YOUZHONG_URL}?id=codfrm_recommend:search&operation=user&username=a`)
+  searchUserName : (userName) => {
+    return request('get', `${YOUZHONG_URL}?id=codfrm_recommend:search&operation=user&username=${userName}`)
   }
 }
