@@ -165,7 +165,7 @@ function YouZhongSearch() {
             <span>{contentTotal} 个</span>
           </h2>
         </div>
-        {searchContentData.length > 0 && searchContentData.map((divContent, index) => {
+        {searchContentData && searchContentData.length > 0 && searchContentData.map((divContent, index) => {
           return (
             <EveryArticleItem
               key={index}
