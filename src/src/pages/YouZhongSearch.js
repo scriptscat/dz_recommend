@@ -135,7 +135,7 @@ function YouZhongSearch() {
                 }
                 options={userNameListResult}
               />
-              <Input style={{ width: '500px' }} onChange={searchInputChange} />
+              <Input style={{ width: '500px' }} onChange={searchInputChange} onPressEnter={search}/>
               <Button type="primary" onClick={search}>
                 查询
               </Button>
