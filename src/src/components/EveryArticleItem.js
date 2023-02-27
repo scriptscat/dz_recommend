@@ -28,7 +28,7 @@ function EveryArticleItem(props) {
   return (
     <div style={{ marginBottom: '15px' }}>
       <div style={{ fontSize: '16px', marginBottom: '3px' }}>
-        <a href={`https://bbs.tampermonkey.net.cn/forum.php?mod=viewthread&tid=${divContent.tid}`}>{parse(showHighLightsAboutTitleOrContent(title, highlightContents))}</a>
+        <a href={`/forum.php?mod=viewthread&tid=${divContent.tid}`}>{parse(showHighLightsAboutTitleOrContent(title, highlightContents))}</a>
       </div>
       {/* <div className="replayAndSearchCounts">0个回复 - 56次查看</div> */}
       <div style={{ fontSize: '12px', marginBottom: '3px' }}>
@@ -38,7 +38,7 @@ function EveryArticleItem(props) {
         <span className="publishTime">{formatDate(divContent.createtime)}</span>{' '}
         -{' '}
         <a
-          href={`https://bbs.tampermonkey.net.cn/home.php?mod=space&uid=${divContent.authorid}&do=profile`}
+          href={`/home.php?mod=space&uid=${divContent.authorid}&do=profile`}
           target="_blank"
         >
           <span className="author">{author}</span>
