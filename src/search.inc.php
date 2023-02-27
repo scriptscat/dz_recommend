@@ -25,7 +25,10 @@ function search()
     $page = $_GET["page"] ?? 1;
     $uid = $_GET["uid"] ?? 0;
     if (empty($keyword)) {
-        showmessage("请输入关键词");
+        echo json_encode([
+            "code" => -1,
+            "msg" => "请输入关键词"
+        ], JSON_UNESCAPED_UNICODE);
         return;
     }
     if ($page < 1) {
@@ -37,7 +40,10 @@ function search()
     $cacheKey = "codfrm_recommend:search:{$_G['uid']}";
     $ok = loadcache($cacheKey);
     if ($ok && $_G['cache'][$cacheKey]['time'] > time() - 5) {
-        showmessage("操作过于频繁，请稍后再试");
+        echo json_encode([
+            "code" => -2,
+            "msg" => "操作过于频繁，请稍后再试"
+        ], JSON_UNESCAPED_UNICODE);
         return;
     }
     // 通过title和content,es搜索,并获取分词结果
