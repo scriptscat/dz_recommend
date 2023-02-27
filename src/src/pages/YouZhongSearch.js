@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import EveryArticleItem from '../components/EveryArticleItem'
 import { Select, Button, Input, Row, Col,  Space, Modal, message } from 'antd'
 import youZhongImage from '../../src/static/image/youzhong.png'
@@ -25,6 +25,23 @@ function YouZhongSearch() {
   const [displayResultDiv, setDisplayResultDiv] = useState('none')
   // 显示搜索用户结果
   const [userNameListResult, setUserNameListResult] = useState([])
+
+  useEffect(() => {
+    // 获取当前 URL
+    const url = window.location.href;
+    // 解析 URL，获取其中的参数
+    const urlParams = new URLSearchParams(url.split("?")[1]);
+    // 获取 keyword 参数的值
+    const keyword = urlParams.get("keyword");
+    console.log(urlParams)
+    console.log(keyword)
+    if(keyword) {
+      setSearchInputContent(keyword)
+      setTimeout(() => {
+        search()
+      }, 0);
+    }
+  }, [])
 
   // 选择搜索的方式
   const selectedMethods = (method) => {
