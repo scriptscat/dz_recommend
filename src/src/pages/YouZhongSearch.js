@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useRequest } from 'ahooks';
 import EveryArticleItem from '../components/EveryArticleItem'
-import { Select, Button, Input, Row, Col,  Space, Modal, message } from 'antd'
+import { Select, Button, Input, Row, Col,  Space, Modal, message, Pagination } from 'antd'
 import youZhongImage from '../../src/static/image/youzhong.png'
 import './YouZhoneSearch.css'
 import Search from '../../src/api/search' 
@@ -19,12 +20,15 @@ function YouZhongSearch() {
   const [searchContentData, setSearcContentData] = useState([])
   // 搜索到的高亮部分内容
   const [searchHighlightContents, setSearchHighlightContents] = useState([])
+  // 当前页
+  const [currentPage, setCurrentPage] = useState(1)
   // 搜索到的内容数量
   const [contentTotal, setContentTotal] = useState(0)
   // 显示搜索结果
   const [displayResultDiv, setDisplayResultDiv] = useState('none')
   // 显示搜索用户结果
   const [userNameListResult, setUserNameListResult] = useState([])
+  
 
   useEffect(() => {
     // 获取当前 URL
@@ -90,12 +94,12 @@ function YouZhongSearch() {
   }
 
   // 调用搜索接口
-  const search = () => {
+  const search = (page = 1) => {
     if (!searchInputContent) {
       message.warning('请输入查询的内容')
       return
     }
-    Search.searchContent(searchInputContent, selectedUserName).then(
+    Search.searchContent(searchInputContent, selectedUserName, page).then(
       res => {
         setDisplayResultDiv('')
         setSearchInputResult(searchInputContent)
@@ -110,9 +114,14 @@ function YouZhongSearch() {
     )
   }
 
+  const { data, loading, run } = useRequest(search, {
+    debounceWait: 1000,
+    manual: true,
+  });
+
   return (
-    <div style={{ marginLeft: '15px' }}>
-      <div>
+    <div style={{ marginLeft: '15px', height: '100%' }}>
+      <div style={{ height: '90%' }}>
         <div style={{ display: 'flex', marginBottom: '20px' }}>
           <div style={{ marginRight: '10px' }}>
             <img src={youZhongImage} />
@@ -152,7 +161,7 @@ function YouZhongSearch() {
                 }
                 options={userNameListResult}
               />
-              <Input style={{ width: '500px' }} onChange={searchInputChange} onPressEnter={search}/>
+              <Input style={{ width: '500px' }} onChange={searchInputChange} onPressEnter={() => {run()}}/>
               <Button type="primary" onClick={search}>
                 查询
               </Button>
@@ -174,6 +183,17 @@ function YouZhongSearch() {
             />
           );
         })}
+      </div>
+      <div style={{ height: '10%' }}>
+          <Pagination
+            current={currentPage}
+            total={contentTotal}
+            pageSize={20}
+            onChange={(page) => {
+              setCurrentPage(page);
+              search(page)
+            }}
+          />
       </div>
     </div>
   );
