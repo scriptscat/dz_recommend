@@ -37,9 +37,16 @@ function YouZhongSearch() {
     const urlParams = new URLSearchParams(url.split("?")[1]);
     // 获取 keyword 参数的值
     const keyword = urlParams.get("keyword");
+    const page = urlParams.get("page");
     if (keyword) {
-      setSearchInputContent(keyword)
-      search(keyword);
+      setSearchInputContent(keyword);
+      if (page) {
+        setCurrentPage(page);
+        search(keyword, page);
+      } else {
+        search(keyword);
+      }
+      
     }
   }, [])
 
@@ -121,7 +128,7 @@ function YouZhongSearch() {
 
   return (
     <div style={{ marginLeft: '15px', height: '100%' }}>
-      <div style={{ height: '90%' }}>
+      <div>
         <div style={{ display: 'flex', marginBottom: '20px' }}>
           <div style={{ marginRight: '10px' }}>
             <img src={youZhongImage} />
@@ -185,7 +192,7 @@ function YouZhongSearch() {
           );
         })}
       </div>
-      <div style={{ height: '10%', display: contentTotal <= 20 ? "none" : "block" }}>
+      <div style={{ display: contentTotal <= 20 ? "" : "block" }}>
         <Pagination
           current={currentPage}
           total={contentTotal}
