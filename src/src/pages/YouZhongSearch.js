@@ -192,7 +192,7 @@ function YouZhongSearch() {
           );
         })}
       </div>
-      <div style={{ display: contentTotal <= 20 ? "" : "block" }}>
+      <div style={{ display: contentTotal <= 20 ? "none" : "block" }}>
         <Pagination
           current={currentPage}
           total={contentTotal}
