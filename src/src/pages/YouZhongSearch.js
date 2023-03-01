@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRequest } from 'ahooks';
 import EveryArticleItem from '../components/EveryArticleItem'
-import { Select, Button, Input, Row, Col, Space, Modal, message, Pagination } from 'antd'
+import { Select, Button, Input, Row, Col, Space, Modal, message, Pagination, Spin } from 'antd'
 import youZhongImage from '../../src/static/image/youzhong.png'
 import './YouZhoneSearch.css'
 import Search from '../../src/api/search'
@@ -28,6 +28,7 @@ function YouZhongSearch() {
   const [displayResultDiv, setDisplayResultDiv] = useState('none')
   // 显示搜索用户结果
   const [userNameListResult, setUserNameListResult] = useState([])
+  const [contentLoading, setContentLoading] = useState(false);
 
 
   useEffect(() => {
@@ -101,22 +102,27 @@ function YouZhongSearch() {
       message.warning('请输入查询的内容')
       return
     }
+    setContentLoading(true)
     setSearcContentData([]);
     Search.searchContent(keyword, selectedUserName, page).then(
       res => {
         if (res.code !== 0) {
+          setContentLoading(false)
           message.error(res.msg);
           return;
         }
+        setContentLoading(false)
         setDisplayResultDiv('')
         setSearchInputResult(keyword)
         setSearcContentData(res.data)
         setSearchHighlightContents(res.analyze)
         setContentTotal(res.total || '0')
+        console.log(res.total)
       }
     ).catch(
       err => {
         console.log(err)
+        setContentLoading(false)
       }
     )
   }
@@ -128,82 +134,84 @@ function YouZhongSearch() {
 
   return (
     <div style={{ marginLeft: '15px', height: '100%' }}>
-      <div>
-        <div style={{ display: 'flex', marginBottom: '20px' }}>
-          <div style={{ marginRight: '10px' }}>
-            <img src={youZhongImage} />
+      <Spin spinning={contentLoading}>
+        <div>
+          <div style={{ display: 'flex', marginBottom: '20px' }}>
+            <div style={{ marginRight: '10px' }}>
+              <img src={youZhongImage} />
+            </div>
+            <div className="searchBox" style={{ width: '100%' }}>
+              <Input.Group compact>
+                <Select
+                  defaultValue="searchContent"
+                  style={{ width: '130px' }}
+                  onChange={selectedMethods}
+                >
+                  <Option value="searchContent">普通搜索</Option>
+                  <Option value="searchContentWithUser">搜索指定用户</Option>
+                </Select>
+                {/* <Input
+                  style={{
+                    width: '200px',
+                    display: `${isDisplayInputWithUser ? '' : 'none'}`,
+                  }}
+                  defaultValue=""
+                  placeholder="请输入用户名"
+                /> */}
+                <Select
+                  style={{
+                    width: '200px',
+                    display: `${isDisplayInputWithUser ? '' : 'none'}`,
+                  }}
+                  showSearch
+                  placeholder="请输入用户名"
+                  optionFilterProp="children"
+                  onChange={onChangeUserName}
+                  onSearch={onSearchUser}
+                  filterOption={(input, option) =>
+                    (option?.label ?? '')
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={userNameListResult}
+                  allowClear
+                />
+                <Input style={{ width: '500px' }} onChange={searchInputChange} value={searchInputContent} onPressEnter={() => { run(searchInputContent) }} />
+                <Button type="primary" onClick={() => search(searchInputContent)}>
+                  查询
+                </Button>
+              </Input.Group>
+            </div>
           </div>
-          <div className="searchBox" style={{ width: '100%' }}>
-            <Input.Group compact>
-              <Select
-                defaultValue="searchContent"
-                style={{ width: '130px' }}
-                onChange={selectedMethods}
-              >
-                <Option value="searchContent">普通搜索</Option>
-                <Option value="searchContentWithUser">搜索指定用户</Option>
-              </Select>
-              {/* <Input
-                style={{
-                  width: '200px',
-                  display: `${isDisplayInputWithUser ? '' : 'none'}`,
-                }}
-                defaultValue=""
-                placeholder="请输入用户名"
-              /> */}
-              <Select
-                style={{
-                  width: '200px',
-                  display: `${isDisplayInputWithUser ? '' : 'none'}`,
-                }}
-                showSearch
-                placeholder="请输入用户名"
-                optionFilterProp="children"
-                onChange={onChangeUserName}
-                onSearch={onSearchUser}
-                filterOption={(input, option) =>
-                  (option?.label ?? '')
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={userNameListResult}
-                allowClear
+          <div className="searchResult" style={{ display: displayResultDiv }}>
+            <h2 style={{ fontSize: '14px' }}>
+              结果: 找到<span>{`" ${searchInputResult} "`}</span>相关内容
+              <span>{contentTotal} 个</span>
+            </h2>
+          </div>
+          {searchContentData && searchContentData.length > 0 && searchContentData.map((divContent, index) => {
+            return (
+              <EveryArticleItem
+                key={index}
+                divContent={divContent}
+                highlightContents={searchHighlightContents}
               />
-              <Input style={{ width: '500px' }} onChange={searchInputChange} value={searchInputContent} onPressEnter={() => { run(searchInputContent) }} />
-              <Button type="primary" onClick={() => search(searchInputContent)}>
-                查询
-              </Button>
-            </Input.Group>
-          </div>
+            );
+          })}
         </div>
-        <div className="searchResult" style={{ display: displayResultDiv }}>
-          <h2 style={{ fontSize: '14px' }}>
-            结果: 找到<span>{`" ${searchInputResult} "`}</span>相关内容
-            <span>{contentTotal} 个</span>
-          </h2>
+        <div style={{ display: contentTotal <= 20 ? "none" : "block" }}>
+          <Pagination
+            current={currentPage}
+            total={contentTotal}
+            pageSize={20}
+            showSizeChanger={false}
+            onChange={(page) => {
+              setCurrentPage(page);
+              search(searchInputContent, page);
+            }}
+          />
         </div>
-        {searchContentData && searchContentData.length > 0 && searchContentData.map((divContent, index) => {
-          return (
-            <EveryArticleItem
-              key={index}
-              divContent={divContent}
-              highlightContents={searchHighlightContents}
-            />
-          );
-        })}
-      </div>
-      <div style={{ display: contentTotal <= 20 ? "none" : "block" }}>
-        <Pagination
-          current={currentPage}
-          total={contentTotal}
-          pageSize={20}
-          showSizeChanger={false}
-          onChange={(page) => {
-            setCurrentPage(page);
-            search(searchInputContent, page);
-          }}
-        />
-      </div>
+      </Spin>
     </div>
   );
 }
