@@ -39,7 +39,7 @@ function search()
     // 使用缓存限流
     $cacheKey = "codfrm_recommend:search:{$_G['uid']}";
     $ok = loadcache($cacheKey);
-    if ($ok && $_G['cache'][$cacheKey]['time'] > time() - 5) {
+    if ($ok && $_G['cache'][$cacheKey]['time'] > time() - 1) {
         echo json_encode([
             "code" => -2,
             "msg" => "操作过于频繁，请稍后再试"
@@ -106,6 +106,7 @@ function search()
         "data" => $list,
         "total" => $resp['hits']['total']['value'],
         "analyze" => $analyzeResp['tokens'],
+        "page"=>$page,
     ], JSON_UNESCAPED_UNICODE);
 }
 

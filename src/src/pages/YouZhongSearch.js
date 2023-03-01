@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useRequest } from 'ahooks';
 import EveryArticleItem from '../components/EveryArticleItem'
-import { Select, Button, Input, Row, Col,  Space, Modal, message, Pagination } from 'antd'
+import { Select, Button, Input, Row, Col, Space, Modal, message, Pagination } from 'antd'
 import youZhongImage from '../../src/static/image/youzhong.png'
 import './YouZhoneSearch.css'
-import Search from '../../src/api/search' 
+import Search from '../../src/api/search'
 
 const { Option } = Select;
 function YouZhongSearch() {
@@ -28,7 +28,7 @@ function YouZhongSearch() {
   const [displayResultDiv, setDisplayResultDiv] = useState('none')
   // 显示搜索用户结果
   const [userNameListResult, setUserNameListResult] = useState([])
-  
+
 
   useEffect(() => {
     // 获取当前 URL
@@ -37,13 +37,9 @@ function YouZhongSearch() {
     const urlParams = new URLSearchParams(url.split("?")[1]);
     // 获取 keyword 参数的值
     const keyword = urlParams.get("keyword");
-    console.log(urlParams)
-    console.log(keyword)
-    if(keyword) {
+    if (keyword) {
       setSearchInputContent(keyword)
-      setTimeout(() => {
-        search()
-      }, 0);
+      search(keyword);
     }
   }, [])
 
@@ -58,7 +54,6 @@ function YouZhongSearch() {
 
   // 搜索内容改变
   const searchInputChange = (e) => {
-    console.log(e.target.value)
     setSearchInputContent(e.target.value)
   }
 
@@ -71,7 +66,7 @@ function YouZhongSearch() {
         if (res.data.length > 0) {
           const userNameListOptions = res.data.map((item, index) => {
             return {
-              value: item.uid, 
+              value: item.uid,
               label: item.username
             }
           })
@@ -94,18 +89,23 @@ function YouZhongSearch() {
   }
 
   // 调用搜索接口
-  const search = (page = 1) => {
-    if (!searchInputContent) {
+  const search = (keyword, page = 1) => {
+    if (!keyword) {
       message.warning('请输入查询的内容')
       return
     }
-    Search.searchContent(searchInputContent, selectedUserName, page).then(
+    setSearcContentData([]);
+    Search.searchContent(keyword, selectedUserName, page).then(
       res => {
+        if (res.code !== 0) {
+          message.error(res.msg);
+          return;
+        }
         setDisplayResultDiv('')
-        setSearchInputResult(searchInputContent)
+        setSearchInputResult(keyword)
         setSearcContentData(res.data)
         setSearchHighlightContents(res.analyze)
-        setContentTotal(res.total)
+        setContentTotal(res.total || '0')
       }
     ).catch(
       err => {
@@ -160,9 +160,10 @@ function YouZhongSearch() {
                     .includes(input.toLowerCase())
                 }
                 options={userNameListResult}
+                allowClear
               />
-              <Input style={{ width: '500px' }} onChange={searchInputChange} onPressEnter={() => {run()}}/>
-              <Button type="primary" onClick={search}>
+              <Input style={{ width: '500px' }} onChange={searchInputChange} value={searchInputContent} onPressEnter={() => { run(searchInputContent) }} />
+              <Button type="primary" onClick={() => search(searchInputContent)}>
                 查询
               </Button>
             </Input.Group>
@@ -184,16 +185,17 @@ function YouZhongSearch() {
           );
         })}
       </div>
-      <div style={{ height: '10%' }}>
-          <Pagination
-            current={currentPage}
-            total={contentTotal}
-            pageSize={20}
-            onChange={(page) => {
-              setCurrentPage(page);
-              search(page)
-            }}
-          />
+      <div style={{ height: '10%', display: contentTotal <= 20 ? "none" : "block" }}>
+        <Pagination
+          current={currentPage}
+          total={contentTotal}
+          pageSize={20}
+          showSizeChanger={false}
+          onChange={(page) => {
+            setCurrentPage(page);
+            search(searchInputContent, page);
+          }}
+        />
       </div>
     </div>
   );
