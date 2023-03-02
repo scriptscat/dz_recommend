@@ -35,5 +35,5 @@
     ]
   },
   "proxy": "http://localhost",
-  "homepage": "./"
+  "homepage": "/source/plugin/codfrm_recommend/build"
 }

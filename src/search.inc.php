@@ -16,12 +16,14 @@ switch ($_GET["operation"]) {
         user();
         break;
     default:
+        echo file_get_contents("./source/plugin/codfrm_recommend/build/index.html");
+        break;
 }
 
 function search()
 {
     global $_G;
-    $keyword = $_GET["keyword"];
+    $keyword = $_GET["keyword"] ?? $_POST["keyword"];
     $page = $_GET["page"] ?? 1;
     $uid = $_GET["uid"] ?? 0;
     if (empty($keyword)) {
@@ -106,7 +108,7 @@ function search()
         "data" => $list,
         "total" => $resp['hits']['total']['value'],
         "analyze" => $analyzeResp['tokens'],
-        "page"=>$page,
+        "page" => $page,
     ], JSON_UNESCAPED_UNICODE);
 }
 
