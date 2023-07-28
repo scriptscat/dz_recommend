@@ -55,7 +55,7 @@ function search()
             "query" => [
                 "multi_match" => [
                     "query" => $keyword,
-                    "fields" => ["title", "content"],
+                    "fields" => ["title^2", "content"],
                 ],
             ],
         ],
@@ -68,7 +68,7 @@ function search()
             "must" => [
                 "multi_match" => [
                     "query" => $keyword,
-                    "fields" => ["title", "content"],
+                    "fields" => ["title^2", "content"],
                 ],
             ],
             "filter" => [

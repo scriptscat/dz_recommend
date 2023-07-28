@@ -1,7 +1,7 @@
 // 转换时间戳
 export function formatDate(timestamp) {
   console.log(timestamp);
-  const date = new Date(timestamp);
+  const date = new Date(parseInt(timestamp)*1000);
   const year = date.getFullYear();
   const month = addLeadingZero(date.getMonth() + 1);
   const day = addLeadingZero(date.getDate());
