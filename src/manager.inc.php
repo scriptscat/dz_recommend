@@ -38,6 +38,10 @@ function refresh()
             break;
         }
         foreach ($list as $data) {
+            // 有阅读权限 或者 被删
+            if($data['readperm'] > 0 || $data['displayorder'] < 0) {
+                continue;
+            }
             $post = C::t("forum_post")->fetch_all_by_tid("tid:" . $data['tid'], $data['tid'], true, '', 0, 1);
             $post = array_pop($post);
             Es::insertThread(
